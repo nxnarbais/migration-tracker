@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+<div class="row">
+  <div class="col-12 col-md-10 col-lg-8">
+    <h1>{{ title }}</h1>
+    <h2>Assets</h2>
+    <p>
+      Collected assets. <br/>
+      <em>Do not hesitate to update by clicking the links below (this may takes some time)(or <a href="/assets/update">update all</a>)</em>
+    </p>
+    <ul>
+      <li>
+        Monitors {{ monitorCount }} <a href="/assets/update/monitors">update monitors</a>
+      </li>
+      <li>
+        Dashboards {{ dashboardCount }} <a href="/assets/update/dashboards">update dashboards</a>
+      </li>
+    </ul>
+    <h2>Monitor Tracker</h2>
+    <h3>Only with upper_bound</h3>
+    <ul>
+      <li>Monitors with OpenMetrics histogram/summary(s) <a href="/metrics/analytics/search_in_monitors/migration/upper_bound">run it >>></a></li>
+      <li>OpenMetrics histogram/summary(s) concerned and count <a href="/metrics/analytics/search_in_monitors_and_count/migration/upper_bound">run it >>></a></li>
+    </ul>
+    <h3>With and without upper_bound</h3>
+    <ul>
+      <li>Monitors with OpenMetrics histogram/summary(s) <a href="/metrics/analytics/search_in_monitors/migration">run it >>></a></li>
+      <li>OpenMetrics histogram/summary(s) concerned and count <a href="/metrics/analytics/search_in_monitors_and_count/migration">run it >>></a></li>
+    </ul>
+    <h2>Dashboard Tracker</h2>
+    <h3>Only with upper_bound</h3>
+    <ul>
+      <li>Dashboards with OpenMetrics histogram/summary(s) <a href="/metrics/analytics/search_in_dashboards/migration/upper_bound">run it >>></a></li>
+      <li>OpenMetrics histogram/summary(s) concerned and count <a href="/metrics/analytics/search_in_dashboards_and_count/migration/upper_bound">run it >>></a></li>
+    </ul>
+    <h3>With and without upper_bound</h3>
+    <ul>
+      <li>Dashboards with OpenMetrics histogram/summary(s) <a href="/metrics/analytics/search_in_dashboards/migration">run it >>></a></li>
+      <li>OpenMetrics histogram/summary(s) concerned and count <a href="/metrics/analytics/search_in_dashboards_and_count/migration">run it >>></a></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

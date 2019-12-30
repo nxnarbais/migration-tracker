@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+  <div class="row">
+    <div class="col-12 col-md-10 col-lg-8">
+      <h1>{{ title }}</h1>
+      <hr />
+      <h2>{{ message.title|safe }}</h2>
+      <p>{{ message.message }}</p>
+      {% if 'doc' in message %}
+        <p><a href={{ message.doc|safe }} target="_blank">documentation</a></p>
+      {% endif %}
+      <hr />
+    </div>
+  </div>
+  <div class="row">
+    {% for item in list %}   
+      <div class="col-12 col-md-6 py-1">
+        <div class="border p-3">
+          {% for key, value in item.items() %}
+            {% if (key != 'url') %}
+              <p>{{ key }}: {{ value }}</p>
+            {% endif %}
+          {% endfor %}
+          <p class="float-right">
+            <a href={{ item.url.supportUrl }}>support >>></a>
+          </p>
+          <p>
+            <a href={{ item.url.url }}>direct >>></a>
+          </p>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+{% endblock %}

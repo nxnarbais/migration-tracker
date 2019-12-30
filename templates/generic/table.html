@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+  <div class="row">
+    <div class="col-12 col-md-10 col-lg-8">
+      <h1>{{ title }}</h1>
+      <hr />
+      <h2>{{ message.title|safe }}</h2>
+      <p>{{ message.message }}</p>
+      {% if 'doc' in message %}
+        <p><a href={{ message.doc|safe }} target="_blank">documentation</a></p>
+      {% endif %}
+      <hr />
+      {% if not list is defined %}
+      <p>Nothing to show, sorry :)</p>
+      {% endif %}
+      {% if total is defined %}
+      <p>Concerned {{ list|length }} out of {{ total }} ({{ (list|length / total * 100)|round(1) }}%)</p>
+      {% endif %}
+      {% if message.criticalLvl is defined %}
+      <div>
+        <p>How critical it is?</p>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: {{message.criticalLvl}}%;" aria-valuenow={{message.criticalLvl}} aria-valuemin="0" aria-valuemax="100">{{message.criticalLvl}}%</div>
+        </div>
+      </div>
+      {% endif %}
+      <hr />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      {% if list|length %} <!-- https://www.shellhacks.com/jinja2-check-if-variable-empty-exists-defined-true/ -->
+      <table class="table" data-toggle="table" data-search="true" data-show-columns="true" data-sortable="true" data-pagination="true">
+        <thead>
+          <tr>
+            {% for key, value in list[0].items() %}
+              {% if (key != 'url') %}
+                <th data-sortable="true">{{ key }}</th>
+              {% endif %}
+            {% endfor %}
+            {% if 'url' in list[0] %}
+              <th>direct</th>
+              <th>support</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in list %}
+            <tr>
+              {% for key, value in item.items() %}
+                {% if (key != 'url' and key != 'app_url') %}
+                  <td>{{ value }}</td>
+                {% endif %}
+              {% endfor %}
+              {% if 'app_url' in item %}
+                <td><a href={{ item.app_url }}>>>></a></td>
+              {% endif %}
+              {% if 'url' in item %}
+                <td><a href={{ item.url.url }}>>>></a></td>
+                <td><a href={{ item.url.supportUrl }}>>>></a></td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Nothing to show, try again later</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+<!-- library in use: https://bootstrap-table.com/ -->
+{% block header %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+{% endblock %}
+{% block javascript %}
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+{% endblock %}
