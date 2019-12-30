@@ -12,7 +12,7 @@ class Monitor:
     oId = self.monitorJSON.get('id')
     urls = {
       "url": "{}/monitors/{}".format(getBaseURL(), oId),
-      "supportUrl": "{}?next_url=%2Fmonitors%2F{}".format(getBaseSupportURL(), oId)
+      # "supportUrl": "{}?next_url=%2Fmonitors%2F{}".format(getBaseSupportURL(), oId)
     }
     return urls
 
@@ -27,6 +27,22 @@ class Monitor:
 
   def getTags(self):
     return self.monitorJSON.get('tags', [])
+
+  def getTagSystemId(self):
+    tags = self.getTags()
+    for t in tags:
+      tSplit = t.split(':', 1)
+      if (tSplit[0] == "systemid" or tSplit[0] == "systemId"):
+        return tSplit[1]
+    return 'NA'
+  
+  def getTagTeam(self):
+    tags = self.getTags()
+    for t in tags:
+      tSplit = t.split(':', 1)
+      if (tSplit[0] == "team"):
+        return tSplit[1]
+    return 'NA'
 
   def getState(self):
     return self.monitorJSON.get('overall_state')  
@@ -48,6 +64,8 @@ class Monitor:
       "type": "monitor",
       "name": self.getName(),
       "tags": self.getTags(),
+      "tagSystemId": self.getTagSystemId(),
+      "tagTeam": self.getTagTeam(),
       "xtype": self.getType(),
       "state_last_modified": self.getStateLastModified(),
       "query": self.getQuery(),

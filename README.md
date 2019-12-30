@@ -36,7 +36,7 @@ docker run -d -p 5000:5000 dd-healthcheck
 
 ## How it works?
 
-### Storage
+### Caching
 
 To go faster, the app is storing the results from the api calls into files that you can find in the `/data` folder. The data can then be out of date regularly.
 

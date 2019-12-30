@@ -20,7 +20,7 @@ class Dashboard:
     oId = self.getId()
     urls = {
       "url": "{}/dashboard/{}".format(getBaseURL(), oId),
-      "supportUrl": "{}?next_url=%2Fdashboard%2F{}".format(getBaseSupportURL(), oId)
+      # "supportUrl": "{}?next_url=%2Fdashboard%2F{}".format(getBaseSupportURL(), oId)
     }
     return urls
 
@@ -49,11 +49,19 @@ class Dashboard:
   def getTags(self):
     return []
   
+  def getTagSystemId(self):
+    title = self.getName()
+    tSplit = title.split(' - ', 1)
+    if(len(tSplit) == 1):
+      return "NA"
+    return tSplit[0]
+  
   def getMainDescription(self):
     return {
       "type": "dashboard",
       "name": self.getName(),
       # "tags": self.getTags(),
+      "tagSystemId": self.getTagSystemId(),
       "xtype": self.getType(),
       "last_modified": self.getModifiedDate(),
       "url": self.getUrl()
