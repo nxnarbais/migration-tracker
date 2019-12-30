@@ -36,7 +36,7 @@ def execFctInParallel(arr, fct):
 def storeParallelOuputToFile(output, filename):
     store = {}
     if(isFileAvailable(filename)):
-        store = readJSONFromFile(filename)
+        store = readJSONFromFile(filename).get("data")
     for o in output:
         oId = o.get('id')
         store[oId] = o.get('output')
@@ -47,7 +47,7 @@ def massObjectUpdate(arr, filename, fct, update = False):
   ## Initialize
   store = {}
   if(isFileAvailable(filename)):
-    store = readJSONFromFile(filename)
+    store = readJSONFromFile(filename).get("data")
 
   ## Identify ids that have to be updated
   idsToUpdate = []

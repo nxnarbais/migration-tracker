@@ -4,6 +4,7 @@
 <div class="row">
   <div class="col-12 col-md-10 col-lg-8">
     <h1>{{ title }}</h1>
+    <hr/>
     <h2>Assets</h2>
     <p>
       Collected assets. <br/>
@@ -11,12 +12,13 @@
     </p>
     <ul>
       <li>
-        Monitors {{ monitorCount }} <a href="/assets/update/monitors"><i class="fas fa-sync"></i></a>
+        Monitors {{ monitorCount }} <em>(last updated: {{ monitorUpdatedAt }})</em> <a href="/assets/update/monitors"><i class="fas fa-sync"></i></a>
       </li>
       <li>
-        Dashboards {{ dashboardCount }} <a href="/assets/update/dashboards"><i class="fas fa-sync"></i></a>
+        Dashboards {{ dashboardCount }} <em>(last updated: {{ dashboardUpdatedAt }})</em> <a href="/assets/update/dashboards"><i class="fas fa-sync"></i></a>
       </li>
     </ul>
+    <hr/>
     <h2>Monitor Tracker</h2>
     <h3>Only with upper_bound</h3>
     <ul>
@@ -28,6 +30,7 @@
       <li>Monitors with OpenMetrics histogram/summary(s) <a href="/metrics/analytics/search_in_monitors/migration">run it >>></a></li>
       <li>OpenMetrics histogram/summary(s) concerned and count <a href="/metrics/analytics/search_in_monitors_and_count/migration">run it >>></a></li>
     </ul>
+    <hr/>
     <h2>Dashboard Tracker</h2>
     <h3>Only with upper_bound</h3>
     <ul>

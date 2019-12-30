@@ -22,7 +22,9 @@ def _getDashboardsJSON(update = False):
     dashboardsJSON = api.Dashboard.get_all()
     print("load (dashboards)")
     writeJSONToFile(FILENAME, dashboardsJSON)
-    return dashboardsJSON
+    return {
+      "data": dashboardsJSON
+    }
   else:
     if(isFileAvailable(FILENAME)):
       return readJSONFromFile(FILENAME)
@@ -33,13 +35,13 @@ def getDashboardDetails(dashboardId, update = False):
   # print("_getDashboardDetails: {}".format(dashboardId))
   if(update):
     dashboardDetailsJSON = api.Dashboard.get(dashboardId)
-    dashboardDetailsJSONStored = readJSONFromFile(FILENAME_DETAILS)
+    dashboardDetailsJSONStored = readJSONFromFile(FILENAME_DETAILS).get("data")
     dashboardDetailsJSONStored[dashboardId] = dashboardDetailsJSON
     writeJSONToFile(FILENAME_DETAILS, dashboardDetailsJSONStored)
     return dashboardDetailsJSON
   else:
     if(isFileAvailable(FILENAME_DETAILS)):
-      dashboardDetailsJSONStored = readJSONFromFile(FILENAME_DETAILS)
+      dashboardDetailsJSONStored = readJSONFromFile(FILENAME_DETAILS).get("data")
       if(dashboardId in dashboardDetailsJSONStored):
         return dashboardDetailsJSONStored[dashboardId]
       else:
@@ -72,12 +74,19 @@ def enrichDashboardsWithDetails(arr, update = False):
   return arr
 
 def getDashboards(update = False):
-  dashboardJSON = _getDashboardsJSON(update).get('dashboards', [])
+  dashboardJSON = _getDashboardsJSON(update).get("data", {}).get('dashboards', [])
   dashboards = []
   for d in dashboardJSON:
     dashboards.append(Dashboard(d))
   return dashboards
 
+def getDashboardsMetadata(update = False):
+  dashboardJSON = _getDashboardsJSON(update)
+  dashboards = []
+  for d in dashboardJSON.get("data", {}).get('dashboards', []):
+    dashboards.append(Dashboard(d))
+  dashboardJSON['data'] = dashboards
+  return dashboardJSON
 
 TIMEOUT = 20
 def _getDetails(id, timeout = TIMEOUT):

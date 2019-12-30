@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, redirect, url_for
 
-from services.api.monitors import getMonitors, getMonitorAlerts
+from services.api.monitors import getMonitors
 from services.api.dashboards import getDashboards, getDashboardDetails, enrichDashboardsWithDetails, enrichDashboardsWithDetails_v2
 
 update_endpoints = Blueprint('update_endpoints', __name__)

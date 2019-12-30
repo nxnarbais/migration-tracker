@@ -21,7 +21,9 @@ def _getMonitorsJSON(update = False):
     print("load (monitors)")
     print("loaded {} monitors".format(len(monitorsJSON)))
     writeJSONToFile(FILENAME, monitorsJSON)
-    return monitorsJSON
+    return {
+      "data": monitorsJSON
+    }
   else:
     if(isFileAvailable(FILENAME)):
       return readJSONFromFile(FILENAME)
@@ -29,36 +31,19 @@ def _getMonitorsJSON(update = False):
       return _getMonitorsJSON(True)
 
 def getMonitors(update = False):
-  monitorsJSON = _getMonitorsJSON(update)
+  monitorsJSON = _getMonitorsJSON(update).get("data", [])
   monitors = []
   for m in monitorsJSON:
     monitors.append(Monitor(m))
   return monitors
 
+def getMonitorsMetadata(update = False):
+  monitorsJSON = _getMonitorsJSON(update)
+  monitors = []
+  for m in monitorsJSON.get('data'):
+    monitors.append(Monitor(m))
+  monitorsJSON["data"] = monitors
+  return monitorsJSON
+
 def _getMonitorDetailsJSON(monitorId):
   return api.Monitor.get(monitorId, group_states='all')
-
-## Doc: https://docs.datadoghq.com/monitors/faq/how-can-i-export-alert-history/
-def getMonitorAlerts(update = False):
-  if(update):
-    baseUrl = "https://app.datadoghq.{}/".format(getUrlExtension())
-    endpoint = "report/hourly_data/monitor"
-    # print('{}{}?api_key={}&application_key={}'.format(baseUrl, endpoint, API_KEY, APP_KEY))
-    r = requests.get('{}{}?api_key={}&application_key={}'.format(baseUrl, endpoint, API_KEY, APP_KEY))
-    c = r.content.decode()
-    writeJSONToFile(FILENAME_ALERTS, c)
-    output = []
-    lines = c.split("\n")
-    for l in lines:
-      output.append(l.split(","))
-    return output
-  else:
-    if(isFileAvailable(FILENAME_ALERTS)):
-      c = readJSONFromFile(FILENAME_ALERTS)
-      output = []
-      lines = c.split("\n")
-      for l in lines:
-        output.append(l.split(","))
-      return output
-    else:
-      return getMonitorAlerts(True)

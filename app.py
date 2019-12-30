@@ -13,8 +13,8 @@ from utils.ddUrlHandler import getUrlExtension
 from blueprints.update import update_endpoints
 from blueprints.metrics import metric_endpoints
 
-from services.api.monitors import getMonitors, getMonitorAlerts
-from services.api.dashboards import getDashboards, getDashboardDetails, enrichDashboardsWithDetails
+from services.api.monitors import getMonitors, getMonitorsMetadata
+from services.api.dashboards import getDashboards, getDashboardsMetadata, getDashboardDetails, enrichDashboardsWithDetails
 
 app = Flask(__name__)
 
@@ -32,13 +32,15 @@ initialize(**options)
 
 @app.route('/')
 def homepage():
-  monitors = getMonitors()
-  dashboards = getDashboards()
+  monitors = getMonitorsMetadata()
+  dashboards = getDashboardsMetadata()
 
   return render_template('homepage.html',
     title="Homepage",
-    monitorCount = len(monitors),
-    dashboardCount = len(dashboards),
+    monitorCount = len(monitors.get('data')),
+    monitorUpdatedAt = monitors.get('updatedAt'),
+    dashboardCount = len(dashboards.get('data')),
+    dashboardUpdatedAt = dashboards.get('updatedAt'),
   )
 
 if __name__ == "__main__":
